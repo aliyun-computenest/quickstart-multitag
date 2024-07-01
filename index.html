@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="计算巢是阿里云开放给企业应用服务商的服务管理平台。服务商能够在计算巢上发布私有化部署服务，为其客户提供云上软件一键部署的能力；同时也支持全托管模式的服务，赋能服务商托管其客户资源。">
+  <title>快速部署MultiTag媒资系统 - Aliyun 计算巢 x Demo</title>
+
+  <link rel="shortcut icon" href="img/favicon.ico">
+
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css">
+  <link rel="stylesheet" href="css/theme.css">
+  
+
+  
+
+  
+  
+
+  
+    <script src="search/main.js"></script>
+  
+
+  
+
+  <script src="js/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="nav">
+      <div class="nav-inner">
+        <div class="logo">
+          <img src="./img/logo-2x.png">
+        </div>
+        <div class="nav-list">
+          <ul>
+          
+              <li><a href="#multitag">快速部署MultiTag媒资系统</a></li>
+              
+                  <li><a href="#_1">概述</a></li>
+                  
+              
+                  <li><a href="#_2">计费说明</a></li>
+                  
+              
+                  <li><a href="#_3">部署架构</a></li>
+                  
+              
+                  <li><a href="#ram">RAM账号所需权限</a></li>
+                  
+              
+          
+              <li><a href="#_4">部署流程</a></li>
+              
+                  <li><a href="#_5">第一步：检查服务是否开通</a></li>
+                  
+              
+                  <li><a href="#_6">第二步：进行服务配置配置</a></li>
+                  
+              
+                  <li><a href="#_7">第三步：创建服务</a></li>
+                  
+              
+                  <li><a href="#_8">第四步：进入实例详情</a></li>
+                  
+              
+          
+              <li><a href="#_9">系统使用</a></li>
+              
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="content theme-github">
+      
+      <div class="content-inner">        
+        
+        <h1 id="multitag">快速部署MultiTag媒资系统</h1>
+<h2 id="_1">概述</h2>
+<p>MultiTag媒资系统是基于媒体资料管理的多功能的综合性媒资系统，支持综合制作系统、新闻直播系统、音频系统提交的素材和节目入库，并对素材、通稿、待播节目、播后节目进行分门别类的处理等多种业务流程。
+MultiTag媒资系统可以提供素材/通稿入库、节目入库、多模态检索、智能编目、在线预览、主题资料库、智能下载、分组权限、主敏感内容过滤、文件或介质下载等多种类型的服务，实现资源最大限度的共享，最高效率的利用。</p>
+<h2 id="_2">计费说明</h2>
+<p>MultiTag媒资系统在计算巢上的费用主要涉及：所选vCPU与内存规格、磁盘容量、公网带宽、OSS存储、媒体处理（包含转码服务、智能能力服务）、智能媒体生产（包含一键成片、智能检索等服务）。
+计费方式包括包年包月、按量付费，ECS及流量预估费用在创建实例时可实时看到，OSS存储、媒体处理使用、智能媒体服务费用按量付费，具体请见：</p>
+<p>OSS产品价格：https://www.aliyun.com/price/product?spm=5176.7933691.J_5253785160.5.28a62c4765ojgU#/oss/detail</p>
+<p>媒体处理产品价格：https://www.aliyun.com/price/product?spm=5176.7933691.J_5253785160.5.28a62c4765ojgU#/mts/detail/mts</p>
+<p>智能媒体生产产品价格:https://help.aliyun.com/zh/ims/billing-overview</p>
+<h2 id="_3">部署架构</h2>
+<p><img width="327" alt="image" src="https://github.com/aliyun-computenest/quickstart-multitag/assets/158254627/2d126da4-1a47-466b-9b37-38ee4a9bcd5a"></p>
+<h2 id="ram">RAM账号所需权限</h2>
+<p>Demo服务需要对ECS、VPC等资源进行访问和创建操作，若您使用RAM用户创建服务实例，需要在创建服务实例前，对使用的RAM用户的账号添加相应资源的权限。添加RAM权限的详细操作，请参见<a href="https://help.aliyun.com/document_detail/121945.html">为RAM用户授权</a>。所需权限如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>权限策略名称</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AliyunComputeNestUserFullAccess</td>
+<td>管理计算巢服务（ComputeNest）的用户侧权限，该权限可以查看用户侧的视图，也可以对用户侧的视图进行编辑。</td>
+</tr>
+<tr>
+<td>AliyunECSFullAccess</td>
+<td>管理云服务器服务（ECS）的权限</td>
+</tr>
+<tr>
+<td>AliyunVPCFullAccess</td>
+<td>管理专有网络（VPC）的权限。</td>
+</tr>
+<tr>
+<td>AliyunTagAdministratorAccess</td>
+<td>管理标签服务（TAG）和所有阿里云产品标签的权限。</td>
+</tr>
+<tr>
+<td>AliyunCloudMonitorFullAccess</td>
+<td>管理云监控（CloudMonitor）的权限</td>
+</tr>
+<tr>
+<td>AliyunROSFullAccess</td>
+<td>管理资源编排服务（ROS）的权限</td>
+</tr>
+<tr>
+<td>AliyunOSSFullAccess</td>
+<td>管理对象存储服务（OSS）权限</td>
+</tr>
+<tr>
+<td>AliyunMTSFullAccess</td>
+<td>管理媒体转码服务(MTS)的权限</td>
+</tr>
+<tr>
+<td>AliyunICEFullAccess</td>
+<td>管理智能媒体服务的权限</td>
+</tr>
+</tbody>
+</table>
+<h1 id="_4">部署流程</h1>
+<h3 id="_5">第一步：检查服务是否开通</h3>
+<p>部署MultiTag服务除开通ECS服务外，还需要开通对象存储OSS服务、媒体处理MPS服务、智能媒体服务。</p>
+<p>对象存储OSS服务：<a href="https://oss.console.aliyun.com/overview?spm=5176.7933691.J_5253785160.3.55ed2c475hX9ZA">OSS管理控制台 (aliyun.com)</a></p>
+<p>媒体处理MPS服务：<a href="https://mps.console.aliyun.com/overview">媒体处理 MPS (aliyun.com)</a></p>
+<p>智能媒体服务：<a href="https://ice.console.aliyun.com/summary">智能媒体服务IMS (aliyun.com)</a></p>
+<h3 id="_6">第二步：进行服务配置配置</h3>
+<ol>
+<li>设置服务实例名称；</li>
+<li>选择部署地域（可选择上海、杭州、北京区域，可以选择离自己最近的城市，如无特殊要求，保持默认即可）；</li>
+<li>设置存储空间名称（MultiTag媒资系统内所有素材均会存储至该存储空间内）；</li>
+<li>设置系统管理员密码（MultiTag媒资系统管理员admin用户密码）；</li>
+<li>选择ECS服务器配置，配置服务器密码；</li>
+<li>选择ECS服务器所在的可用区及VPC实例</li>
+</ol>
+<h3 id="_7">第三步：创建服务</h3>
+<ol>
+<li>在服务确认页面，勾选同意服务条款，点击“立即创建”，进行付款流程。</li>
+<li>当出现提交成功提示，说明服务已经开始创建，点击“去列表查看”，可以看到服务正在部署中。 <a href="https://github.com/aliyun-computenest/quickstart-minecraft/blob/main/docs/3.jpg"><img alt="1.jpg" src="https://github.com/aliyun-computenest/quickstart-minecraft/raw/main/docs/3.jpg" /></a></li>
+</ol>
+<h3 id="_8">第四步：进入实例详情</h3>
+<ol>
+<li>服务约5分钟完成创建，当服务的状态变成“已部署”，点击服务实例ID进入服务详情。</li>
+<li>浏览器输入服务详情内的访问页面，或者输入服务实例详情-资源-弹性公网IP地址加8000端口访问MultiTag页面。
+<img width="1228" alt="image-20240701150205127" src="https://github.com/aliyun-computenest/quickstart-multitag/assets/158254627/76f2cc7b-415e-437f-bd2a-36b5473c092c"></li>
+</ol>
+<h1 id="_9">系统使用</h1>
+<p>浏览器输入服务详情内的访问页面，初始账号admin，密码为部署时设置的系统管理员密码，输入验证码后即可登陆系统。系统使用详见系统用户使用手册。</p>
+<p><img width="1435" alt="image-20240701150608265" src="https://github.com/aliyun-computenest/quickstart-multitag/assets/158254627/496ec5a0-57a7-4949-816c-5052f1d7db70"></p>
+<p><img width="1438" alt="image-20240701150659835" src="https://github.com/aliyun-computenest/quickstart-multitag/assets/158254627/1024529a-cf40-4533-a604-ea8a71338845"></p>
+        
+      </div>
+
+      <div class="copyrights">© 2009-2022 Aliyun.com 版权所有</div>
+    </div>
+  </div>
+  
+  <!--
+  MkDocs version      : 1.6.0
+  Docs Build Date UTC : 2024-07-01 07:16:59.328449+00:00
+  -->
+</body>
+</html>
